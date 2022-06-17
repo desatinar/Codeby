@@ -65,8 +65,6 @@ export const CartContainer = styled.div`
   p{
     font-weight: 500;
   }
-
-
 }
 
 `
