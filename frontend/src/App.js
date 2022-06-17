@@ -1,12 +1,13 @@
 import { Header } from "./components/Header";
+import { GlobalState } from "./global/GlobalState";
 import { Router } from "./router/Router";
-import { AppContainer } from "./style"
+
 
 export const App = () => {
   return (
-    <div>
+    <GlobalState>
       <Router/>
-    </div>
+    </GlobalState>
   );
 }
 

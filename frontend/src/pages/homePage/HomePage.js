@@ -1,33 +1,24 @@
-import react, { useEffect, useState } from 'react';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import react, { useContext } from 'react';
 import { ProdContainer, BuyButton, Container } from './styled';
-import { getAllProducts } from '../../requests/getAllProducts';
-import { AppBar } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import GlobalStateContext from '../../global/GlobalStateContext';
 
 
 export const HomePage = () => {
-  const [products, setProducts] = useState("")
+  const { product, cart, setCart } = useContext(GlobalStateContext)
 
-  useEffect(() => {
-    getAllProducts(setProducts)
-  }, [])
+  const addToCart = (item) => {
+    const newCart = [...cart, item]
+    setCart(newCart)
+  }
 
-  const navigate = useNavigate()
-
-  const productsImg = products && products.map((prod) => {
+  const products = product && product.map((prod) => {
     let prodImgUrl
     let prodPrice
     const prodName = prod.productName
-
     const prodDetails = prod.items.map((e) => {
       e.images.map(e => {
         prodImgUrl = e.imageUrl
       })
-
       prodPrice = e.sellers[0].commertialOffer.Price
     })
 
@@ -41,17 +32,18 @@ export const HomePage = () => {
             <b>{prodName}</b>
             <p>R$ {prodPrice}</p>
           </div>
-          <BuyButton variant='contained'>Comprar</BuyButton>
+          <BuyButton variant='contained'
+            onClick={() => addToCart({name: prodName, img: prodImgUrl, price: prodPrice, id: prod.productId, quantity: 1})}>
+            Comprar
+          </BuyButton>
         </div>
       </ProdContainer>
     )
   })
 
   return (
-    <div>
-      <Container>
-        {productsImg}
-      </Container>
-    </div>
+    <Container>
+      {products}
+    </Container>
   )
 }

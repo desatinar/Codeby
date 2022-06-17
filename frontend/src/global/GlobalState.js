@@ -1,17 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { getAllProducts } from "../requests/getAllProducts"
 import GlobalStateContext from "./GlobalStateContext"
 
 export const GlobalState = (props) => {
-  const [prod, setProd] = useState([])
+  const [product, setProduct] = useState([])
   const [cart, setCart] = useState([])
-  
-  
-  
-  
+
+  useEffect(() => {
+    getAllProducts(setProduct)
+  }, [])
+
   return(
     <GlobalStateContext.Provider value={{
-      prod, setProd,
-
+      product, setProduct,
+      cart, setCart
     }}>
       {props.children}
     </GlobalStateContext.Provider>
